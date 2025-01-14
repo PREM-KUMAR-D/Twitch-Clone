@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const dotEnv = require('dotenv');
+const mongoose = require('mongoose');
 
 const authRoutes = require('./src/routes/auth-routes');
 
@@ -28,6 +29,15 @@ app.get('/',(req,res,next)=>{
     return res.send("Hello !")
 })
 
-app.listen(PORT,()=>{
-    console.log("server running");
+mongoose.connect(process.env.MONGO_URI)
+.then(()=>{
+    console.log("Data base running...");
+    
+    
+    app.listen(PORT,()=>{
+        console.log("server running");
+    })
+})
+.catch((err)=>{
+    console.log("Data base connection failed");
 })

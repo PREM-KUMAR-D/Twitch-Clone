@@ -10,7 +10,7 @@ const router = express.Router();
 const validator = ExpressValidation.createValidator({});
 
 const registerSchema = Joi.object({
-    userName: Joi.string().min(3).max(12).required(),
+    username: Joi.string().min(3).max(12).required(),
     password: Joi.string().min(6).max(12).required(),
     email: Joi.string().email().required(),
 })
