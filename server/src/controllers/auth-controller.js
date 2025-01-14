@@ -2,8 +2,53 @@ const user = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
+function genToken(val){
+    
+
+    return jwt.sign({
+        userId: val._id,
+        email: val.email,
+    },process.env.TOKEN_KEY,{
+        expiresIn: '8h',
+    });
+}
+
+
 exports.postLogin = async (req, res) => {
-    return res.send('this is the login route');
+    try {
+        const {email, password} = req.body;
+    
+        const userFound = await user.findOne({
+            email: email.toLowerCase(),
+        });
+
+        
+        
+    
+        if(userFound && (bcrypt.compareSync(password,userFound.password))){
+            const token = genToken(userFound);
+            console.log(token);
+            
+
+            return res.status(201).json({
+                userDetails:{
+                    email,
+                    username:userFound.username,
+                    token,
+                },
+                message: 'user logged in succesfully'
+            })
+        }
+        return res.status(400).send("Invalid credentials ! please try again");
+        
+    } catch (error) {
+        console.log('Error: ',error);
+        return res.status(500).send('Error occured please try again!');
+    }
+
+
+
 }
 
 
@@ -20,8 +65,6 @@ exports.postRegister = async (req, res) => {
         if(userExists){
             return res.status(400).send("Email already Exists!");
         }
-        const salt = await bcrypt.genSalt(10);
-        const encPass  = await bcrypt.hash(password,salt);
 
         
         
@@ -30,12 +73,7 @@ exports.postRegister = async (req, res) => {
             password: encPass,
             email: email.toLowerCase(),
         })
-        const token = jwt.sign({
-            userId: user._id,
-            email,
-        },process.env.TOKEN_KEY,{
-            expiresIn: '8h',
-        });
+        const token = genToken(createdUser)
 
         return res.status(201).json({
             userDetails:{
