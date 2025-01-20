@@ -5,6 +5,7 @@ import AuthInput from "./AuthInput";
 import validatePassword, { validatePasswordMessage } from "../validators/validatePassword";
 import validateMail, { validateEmailMessage } from '../validators/validateMail';
 import validateUsername, { validateUsernameMessage } from '../validators/validateUsername';
+import { useRegister } from "../hooks/useRegister";
 
 const Register = ({ switchAuthHanlder }) => {
 
@@ -30,6 +31,8 @@ const Register = ({ switchAuthHanlder }) => {
             showError: false,
         }
     })
+
+    const { register, isLoading } = useRegister();
 
     const handleInputValueChange = (value, field) => {
         setFormState((prev) => {
@@ -80,6 +83,14 @@ const Register = ({ switchAuthHanlder }) => {
 
     }
 
+    const handleRegister = (event) => {
+        event.preventDefault();
+        register(formState.email.value, formState.password.value, formState.username.value);
+    }
+
+    const isSubmitDisabled = isLoading || !formState.email.isValid || !formState.password.isValid || !formState.username.isValid ||
+        formState.password.value !== formState.passwordConf.value;
+
     console.log(formState)
 
     return (
@@ -98,16 +109,6 @@ const Register = ({ switchAuthHanlder }) => {
                     validationMessage={validateEmailMessage}
                 ></AuthInput>
                 <AuthInput
-                    field='password'
-                    label='Password'
-                    value={formState.password.value}
-                    onChangeHandler={handleInputValueChange}
-                    type='password'
-                    onBlurHandler={handleInputValidationOnBlur}
-                    showErrorMessage={formState.password.showError}
-                    validationMessage={validateUsernameMessage}
-                ></AuthInput>
-                <AuthInput
                     field='username'
                     label='Username'
                     value={formState.username.value}
@@ -116,6 +117,16 @@ const Register = ({ switchAuthHanlder }) => {
                     onBlurHandler={handleInputValidationOnBlur}
                     showErrorMessage={formState.username.showError}
                     validationMessage={validatePasswordMessage}
+                ></AuthInput>
+                <AuthInput
+                    field='password'
+                    label='Password'
+                    value={formState.password.value}
+                    onChangeHandler={handleInputValueChange}
+                    type='password'
+                    onBlurHandler={handleInputValidationOnBlur}
+                    showErrorMessage={formState.password.showError}
+                    validationMessage={validateUsernameMessage}
                 ></AuthInput>
                 <AuthInput
                     field='passwordConf'
@@ -129,10 +140,8 @@ const Register = ({ switchAuthHanlder }) => {
                 ></AuthInput>
             </form>
             <button
-                disabled={!formState.email.isValid ||
-                     !formState.password.isValid || 
-                     !formState.username.isValid || 
-                     formState.password.value !== formState.passwordConf.value}
+                disabled={isSubmitDisabled}
+                onClick={handleRegister}
             >
                 Register</button>
             <span onClick={switchAuthHanlder}> Already have an account ? SignIn</span>

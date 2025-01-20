@@ -4,6 +4,7 @@ import { Logo } from "./Logo";
 import AuthInput from "./AuthInput";
 import validatePassword, { validatePasswordMessage } from "../validators/validatePassword";
 import validateMail, { validateEmailMessage } from '../validators/validateMail';
+import { useLogin } from "../hooks/useLogin";
 
 const Login = ({ switchAuthHanlder }) => {
 
@@ -19,6 +20,8 @@ const Login = ({ switchAuthHanlder }) => {
             showError: false,
         }
     })
+
+    const { login, isLoading } = useLogin();
 
     const handleInputValueChange = (value, field) => {
         setFormState((prev) => {
@@ -38,11 +41,11 @@ const Login = ({ switchAuthHanlder }) => {
         switch (field) {
             case 'password':
                 isValid = validatePassword(value);
-                
+
                 break;
             case 'email':
                 isValid = validateMail(value);
-                
+
                 break;
 
 
@@ -63,6 +66,13 @@ const Login = ({ switchAuthHanlder }) => {
 
     }
 
+    const handleLogin = (event) => {
+        event.preventDefault();
+        login(formState.email.value, formState.password.value)
+    }
+
+    const isSubmitDisabled = isLoading || !formState.email.isValid || !formState.password.isValid;
+
     console.log(formState)
 
     return (
@@ -80,7 +90,7 @@ const Login = ({ switchAuthHanlder }) => {
                     showErrorMessage={formState.email.showError}
                     validationMessage={validateEmailMessage}
                 ></AuthInput>
-                <AuthInput 
+                <AuthInput
                     field='password'
                     label='Password'
                     value={formState.password.value}
@@ -90,11 +100,13 @@ const Login = ({ switchAuthHanlder }) => {
                     showErrorMessage={formState.password.showError}
                     validationMessage={validatePasswordMessage}
                 ></AuthInput>
+                <button
+                    onClick={handleLogin}
+
+                    disabled={isSubmitDisabled}
+                >
+                    Log in</button>
             </form>
-            <button
-                disabled={!formState.email.isValid || !formState.password.isValid}
-            >
-                Log in</button>
             <span onClick={switchAuthHanlder}> Don't have an account ? Signup</span>
 
         </div>
