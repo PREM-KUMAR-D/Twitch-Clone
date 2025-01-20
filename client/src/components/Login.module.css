@@ -29,3 +29,24 @@
 .loginContainer span:hover{
     opacity: 0.8;
 }
+
+.loginContainer button {
+    cursor: pointer;
+    background-color: #772ce8; /* Twitch Purple */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    width: 300px;
+    height: 30px;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.loginContainer button:hover {
+    opacity: 0.8;
+}
+
+.loginContainer button:disabled {
+    opacity: 0.3;
+}

@@ -19,7 +19,7 @@ const AuthPage =()=>{
          <Login switchAuthHanlder={handleAuthPageToggle} /> : 
          <Register switchAuthHanlder={handleAuthPageToggle} />}
 
-        auth page
+        
     </div>)
 }
 
