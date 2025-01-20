@@ -1,11 +1,12 @@
 import React from "react";
 import classes from './Login.module.css';
+import { Logo } from "./Logo";
 
 const Login =({switchAuthHanlder})=>{
 
     return (
         <div className={classes.loginContainer} >
-            <p>Logo </p>
+            <Logo text={'Login to Twitch clone'}/>
             <form >
                 form
             </form>
