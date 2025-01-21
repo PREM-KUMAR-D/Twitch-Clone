@@ -66,7 +66,9 @@ exports.postRegister = async (req, res) => {
             return res.status(400).send("Email already Exists!");
         }
 
-        
+        const salt = bcrypt.genSaltSync(10);
+
+        const encPass = bcrypt.hashSync(password,salt);
         
         const createdUser = await user.create({
             username: username,
