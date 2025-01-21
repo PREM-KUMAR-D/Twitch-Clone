@@ -25,7 +25,7 @@ const chanelSchema = new mongoose.Schema({
     },
     streamKey: {
         type: String,
-        default: uuid()
+        default: uuid.v1()
     },
     message:{
         type: [{
@@ -38,6 +38,6 @@ const chanelSchema = new mongoose.Schema({
 
 })
 
-const chanelModel = mongoose.model(chanelSchema,'Chanel');
+const chanelModel = mongoose.model('Chanel',chanelSchema);
 
 module.exports = chanelModel;

@@ -5,6 +5,7 @@ const dotEnv = require('dotenv');
 const mongoose = require('mongoose');
 
 const authRoutes = require('./src/routes/auth-routes');
+const chanelRoutes = require('./src/routes/chanel-routes');
 
 
 dotEnv.config();
@@ -23,12 +24,9 @@ app.use(cors());
 
 app.use("/api/v1/auth",authRoutes);
 
+app.use("/api/v1/chanel",chanelRoutes)
 
 
-app.get('/',(req,res,next)=>{
-    console.log("Running the server..");
-    return res.send("Hello !")
-})
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{

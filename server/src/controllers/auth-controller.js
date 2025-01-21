@@ -1,4 +1,6 @@
 const user = require('../models/user');
+const chanel = require('../models/channel');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -69,11 +71,17 @@ exports.postRegister = async (req, res) => {
         const salt = bcrypt.genSaltSync(10);
 
         const encPass = bcrypt.hashSync(password,salt);
+
+        const newChannel = await chanel.create({
+
+        })
+
         
         const createdUser = await user.create({
             username: username,
             password: encPass,
             email: email.toLowerCase(),
+            chanel: newChannel._id
         })
         const token = genToken(createdUser)
 
