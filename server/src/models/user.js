@@ -12,6 +12,14 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String ,
         required: true,
+    },
+    chanel:{
+        type: mongoose.Schema.ObjectId, ref: "Chanel"
+    },
+    followedChanels: {
+        type: [{
+            type: mongoose.Schema.ObjectId, ref: "Chanel"
+        }]
     }
 })
 
