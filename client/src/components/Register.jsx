@@ -7,6 +7,7 @@ import validateMail, { validateEmailMessage } from '../validators/validateMail';
 import validateUsername, { validateUsernameMessage } from '../validators/validateUsername';
 import { useRegister } from "../hooks/useRegister";
 
+
 const Register = ({ switchAuthHanlder }) => {
 
     const [formState, setFormState] = useState({
@@ -86,6 +87,7 @@ const Register = ({ switchAuthHanlder }) => {
     const handleRegister = (event) => {
         event.preventDefault();
         register(formState.email.value, formState.password.value, formState.username.value);
+        
     }
 
     const isSubmitDisabled = isLoading || !formState.email.isValid || !formState.password.isValid || !formState.username.isValid ||
