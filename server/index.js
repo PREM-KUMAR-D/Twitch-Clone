@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const authRoutes = require('./src/routes/auth-routes');
 const chanelRoutes = require('./src/routes/chanel-routes');
+const settingsRoutes = require('./src/routes/setting-routes');
 
 
 dotEnv.config();
@@ -24,7 +25,9 @@ app.use(cors());
 
 app.use("/api/v1/auth",authRoutes);
 
-app.use("/api/v1/chanel",chanelRoutes)
+app.use("/api/v1/chanel",chanelRoutes);
+
+app.use("/api/v1/settings",settingsRoutes);
 
 
 
