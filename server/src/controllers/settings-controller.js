@@ -1,5 +1,6 @@
 const user = require('../models/user');
 const chanel = require('../models/channel');
+const bcrypt = require('bcryptjs')
 
 exports.getChanelSettings = async(req,res,next)=>{
     try {
@@ -66,6 +67,34 @@ exports.putChanelSettings = async(req,res,next)=>{
         })
 
     } catch (error) {
+        return res.status(500).send('something went wrong')
+    }
+}
+
+
+exports.patchChangePassword = async (req,res,next)=>{
+    try {
+        
+        const {userId } = req.user;
+
+        const {password , newPassword} = req.body;
+
+        const userData = await user.findById(userId, { password: 1});
+
+        const isCorrect = await bcrypt.compare(password,userData.password);
+
+        if(!isCorrect){
+            return res.status(400).send('Invalid Password please try again');
+        }
+
+        const encryptedPass = await bcrypt.hash(newPassword, 10);
+
+        await user.updateOne({_id: userId},{ password: encryptedPass});
+
+        return res.status(200).send('Password changed succesfully')
+
+    } catch (error) {
+        console.log(error)
         return res.status(500).send('something went wrong')
     }
 }
