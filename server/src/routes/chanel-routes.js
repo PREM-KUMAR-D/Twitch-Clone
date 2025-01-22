@@ -2,6 +2,7 @@ const express = require('express');
 const ExpressValidation = require('express-joi-validation');
 const Joi = require('joi');
 const {getChanelDetails} = require('../controllers/chanel-controller');
+const {getAllChanels} = require('../controllers/chanel-controller');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const validator = ExpressValidation.createValidator();
 
 
 router.get('/:chanelId',validator.params(channelDetailSchema),getChanelDetails)
-// router.get('*',()=>console.log("coming.."))
+router.get('/',getAllChanels)
 
 
 module.exports = router;
